@@ -76,6 +76,11 @@ for var, name in noaa_name.items():
         {"time": [cf.DatetimeNoLeap(2000, m, 15) for m in range(1, 13)]}
     )
 
+    # inadvertently added a time dimension to bounds
+    dset["lat_bnds"] = dset["lat_bnds"].isel({"time": 0})
+    dset["lon_bnds"] = dset["lon_bnds"].isel({"time": 0})
+    dset["depth_bnds"] = dset["depth_bnds"].isel({"time": 0})
+
     # Encode correct climatology bounds. It would be great to have ILAMB
     # understand how to parse these.
     dset["climatology_bounds"] = xr.DataArray(
@@ -115,6 +120,14 @@ for var, name in noaa_name.items():
         ]
     )
     dset = dset.rename({f"{var}_an": variable_name[var]})
+
+    # correct the units
+    units = dset[variable_name[var]].attrs["units"]
+    if units == "micromoles_per_kilogram":
+        dset[variable_name[var]].attrs["units"] = "1e-6 kg-1"
+    elif units == "degrees_celsius":
+        dset[variable_name[var]].attrs["units"] = "degC"
+
     dset.attrs = {
         "title": "World Ocean Atlas",
         "version": "2018",
