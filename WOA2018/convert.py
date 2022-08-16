@@ -81,31 +81,21 @@ for var, name in noaa_name.items():
     dset["lon_bnds"] = dset["lon_bnds"].isel({"time": 0})
     dset["depth_bnds"] = dset["depth_bnds"].isel({"time": 0})
 
-    # Encode correct climatology bounds. It would be great to have ILAMB
-    # understand how to parse these.
-    dset["climatology_bounds"] = xr.DataArray(
+    # add time bounds
+    dset["time_bnds"] = xr.DataArray(
         [
-            [cf.DatetimeNoLeap(1995, 1, 1), cf.DatetimeNoLeap(2005, 2, 1)],
-            [cf.DatetimeNoLeap(1995, 2, 1), cf.DatetimeNoLeap(2005, 3, 1)],
-            [cf.DatetimeNoLeap(1995, 3, 1), cf.DatetimeNoLeap(2005, 4, 1)],
-            [cf.DatetimeNoLeap(1995, 4, 1), cf.DatetimeNoLeap(2005, 5, 1)],
-            [cf.DatetimeNoLeap(1995, 5, 1), cf.DatetimeNoLeap(2005, 6, 1)],
-            [cf.DatetimeNoLeap(1995, 6, 1), cf.DatetimeNoLeap(2005, 7, 1)],
-            [cf.DatetimeNoLeap(1995, 7, 1), cf.DatetimeNoLeap(2005, 8, 1)],
-            [cf.DatetimeNoLeap(1995, 8, 1), cf.DatetimeNoLeap(2005, 9, 1)],
-            [cf.DatetimeNoLeap(1995, 9, 1), cf.DatetimeNoLeap(2005, 10, 1)],
-            [cf.DatetimeNoLeap(1995, 10, 1), cf.DatetimeNoLeap(2005, 11, 1)],
-            [cf.DatetimeNoLeap(1995, 11, 1), cf.DatetimeNoLeap(2005, 12, 1)],
-            [cf.DatetimeNoLeap(1995, 12, 1), cf.DatetimeNoLeap(2005, 12, 31)],
+            [
+                cf.DatetimeNoLeap(2000, m + 1, 1),
+                cf.DatetimeNoLeap(2000 + (m == 11), (m + 1) % 12 + 1, 1),
+            ]
+            for m in range(12)
         ],
         dims=["time", "nbounds"],
     )
 
     # Drop some of these variables and rename for output
     dset = dset.drop(
-        [
-            "crs",
-        ]
+        ["crs", "climatology_bounds"]
         + [
             f"{var}_{postfix}"
             for postfix in [
@@ -133,7 +123,7 @@ for var, name in noaa_name.items():
         "version": "2018",
         "institutions": "NOAA National Centers for Environmental Information",
         "source": "[" + ", ".join(remote) + "]",
-        "history": "merged into a single file, time and climatology bounds rewritten",
+        "history": "merged into a single file, time and bounds rewritten, units made CF-compliant",
         "references": """
     @ARTICLE{Boyer,
     author = {Boyer, Tim P.; Garcia, Hernan E.; Locarnini, Ricardo A.; Zweng, Melissa M.; Mishonov, Alexey V.; Reagan, James R.; Weathers, Katharine A.; Baranova, Olga K.; Seidov, Dan; Smolyar, Igor V.},
@@ -144,4 +134,10 @@ for var, name in noaa_name.items():
     }
     """,
     }
-    dset.to_netcdf(f"{variable_name[var]}.nc")
+    dset.to_netcdf(
+        f"{variable_name[var]}.nc",
+        encoding={
+            "time": {"units": "days since 1850-01-01", "bounds": "time_bnds"},
+            "time_bnds": {"units": "days since 1850-01-01"},
+        },
+    )
