@@ -126,11 +126,11 @@ for var, name in noaa_name.items():
         "history": "merged into a single file, time and bounds rewritten, units made CF-compliant",
         "references": """
     @ARTICLE{Boyer,
-    author = {Boyer, Tim P.; Garcia, Hernan E.; Locarnini, Ricardo A.; Zweng, Melissa M.; Mishonov, Alexey V.; Reagan, James R.; Weathers, Katharine A.; Baranova, Olga K.; Seidov, Dan; Smolyar, Igor V.},
+    author = {Boyer, Tim P., Garcia, Hernan E., Locarnini, Ricardo A., Zweng, Melissa M., Mishonov, Alexey V., Reagan, James R., Weathers, Katharine A., Baranova, Olga K., Seidov, Dan, Smolyar, Igor V.},
     title= {World Ocean Atlas 2018},
     journal = {NOAA National Centers for Environmental Information},
     year = {2018},
-    doi = {https://www.ncei.noaa.gov/archive/accession/NCEI-WOA18}
+    url = {https://www.ncei.noaa.gov/archive/accession/NCEI-WOA18}
     }
     """,
     }
