@@ -114,7 +114,7 @@ for var, name in noaa_name.items():
     # correct the units
     units = dset[variable_name[var]].attrs["units"]
     if units == "micromoles_per_kilogram":
-        dset[variable_name[var]].attrs["units"] = "1e-6 kg-1"
+        dset[variable_name[var]].attrs["units"] = "1e-6 mol kg-1"
     elif units == "degrees_celsius":
         dset[variable_name[var]].attrs["units"] = "degC"
 
