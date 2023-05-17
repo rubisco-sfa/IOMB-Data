@@ -121,11 +121,11 @@ ds["lat"].attrs["bounds"] = "lat_bnds"
 ds["lon_bnds"] = (("lon", "nb"), np.asarray([lon[:-1], lon[1:]]).T)
 ds["lon"].attrs["bounds"] = "lon_bnds"
 ds.attrs = {
-    "title": "Global Ocean Data Analysis Project",
+    "title": "Global Ocean Data Analysis Project: A uniformly calibrated open ocean data product on inorganic carbon and carbon-relevant variables",
     "version": "v2.2022",
     "institutions": "National Centers for Environmental Information",
     "source": REMOTE_SOURCE,
-    "history": f"Downloaded on {download_stamp} and generated netCDF file on {generate_stamp} with ",
+    "history": f"Downloaded on {download_stamp} and generated netCDF file on {generate_stamp} with https://github.com/rubisco-sfa/IOMB-Data/blob/main/GLODAP2022/convert.py",
     "references": """
 @ARTICLE{,
     author = {Lauvset, S. K., Lange, N., Tanhua, T., Bittig, H. C., Olsen, A., Kozyr, A., Alin, S. R., Álvarez, M., Azetsu-Scott, K., Barbero, L., Becker, S., Brown, P.J., Carter, B. R., da Cunha, L. C., Feely, R. A., Hoppema, M., Humphreys, M. P., Ishii, M., Jeansson, E., Jiang, L. Q., Jones, S. D., Lo Monaco, C., Murata, A., Müller, J. D., Pérez, F. F., Pfeil, B., Schirnick, C., Steinfeldt, R., Suzuki, T., Tilbrook, B., Ulfsbo, A., Velo, A., Woosley, R. J., and Key, R. M.},
