@@ -101,6 +101,14 @@ ds = ds.rename(
         "silicate": "sio3",
     }
 )
+ds["thetao"].attrs["units"] = "degC"
+ds["so"].attrs["units"] = "0.001"
+ds["no3"].attrs["units"] = "umol kg-1"
+ds["o2"].attrs["units"] = "umol kg-1"
+ds["po4"].attrs["units"] = "umol kg-1"
+ds["sio3"].attrs["units"] = "umol kg-1"
+ds["chla"].attrs["units"] = "ug L-1"
+ds["talk"].attrs["units"] = "umol kg-1"
 ds["time_bnds"] = (
     ("time", "nb"),
     np.asarray(
@@ -138,6 +146,12 @@ ds.attrs = {
 ds.to_netcdf(
     "GLODAP2.2022.nc",
     encoding={
+        "thetao": {"zlib": True},
+        "so": {"zlib": True},
+        "no3": {"zlib": True},
+        "o2": {"zlib": True},
+        "po4": {"zlib": True},
+        "sio3": {"zlib": True},
         "time": {"units": "days since 1850-01-01", "bounds": "time_bnds"},
         "time_bnds": {"units": "days since 1850-01-01"},
     },
