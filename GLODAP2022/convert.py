@@ -62,6 +62,7 @@ df = df[
         "phosphate",
         "silicate",
         "talk",
+        "tco2",
     ]
 ]
 
@@ -99,6 +100,7 @@ ds = ds.rename(
         "oxygen": "o2",
         "phosphate": "po4",
         "silicate": "sio3",
+        "tco2": "dissic",
     }
 )
 ds["thetao"].attrs["units"] = "degC"
@@ -107,8 +109,9 @@ ds["no3"].attrs["units"] = "umol kg-1"
 ds["o2"].attrs["units"] = "umol kg-1"
 ds["po4"].attrs["units"] = "umol kg-1"
 ds["sio3"].attrs["units"] = "umol kg-1"
-ds["chla"].attrs["units"] = "ug L-1"
+ds["chla"].attrs["units"] = "ug kg-1"
 ds["talk"].attrs["units"] = "umol kg-1"
+ds["dissic"].attrs["units"] = "umol kg-1"
 ds["time_bnds"] = (
     ("time", "nb"),
     np.asarray(
@@ -152,6 +155,9 @@ ds.to_netcdf(
         "o2": {"zlib": True},
         "po4": {"zlib": True},
         "sio3": {"zlib": True},
+        "chla": {"zlib": True},
+        "talk": {"zlib": True},
+        "dissic": {"zlib": True},
         "time": {"units": "days since 1850-01-01", "bounds": "time_bnds"},
         "time_bnds": {"units": "days since 1850-01-01"},
     },
