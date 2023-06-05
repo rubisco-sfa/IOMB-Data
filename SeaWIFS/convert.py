@@ -73,6 +73,7 @@ time = xr.DataArray(
 das.insert(8, xr.ones_like(das[0]) * -9999)
 da = xr.concat(das, dim=time)
 da = xr.where(da != -9999, da, np.nan, keep_attrs=True)
+da = da.expand_dims(dim={"depth": [0.0]}, axis=1)
 ds = da.to_dataset()
 ds = ds.pint.quantify()
 
@@ -81,7 +82,7 @@ ds = il.coarsen_dataset(ds)
 ds = ds.drop("cell_measures")
 ds = ds.pint.dequantify(format="cf")
 ds = ds.rename({"chlor_a": "chl"})
-ds = ds.transpose("time", "lat", "lon")
+ds = ds.transpose("time", "depth", "lat", "lon")
 
 # write out attributes
 ds["time_bnds"] = (
@@ -96,6 +97,8 @@ ds["time_bnds"] = (
         ]
     ).T,
 )
+ds["depth_bnds"] = (("depth", "nb"), np.asarray([[0.0, 10.0]]))
+ds["depth"].attrs = dict(bounds="depth_bnds", units="m")
 ds.attrs = {
     "title": "SeaWiFS Level-3 Standard Mapped Image",
     "version": "R2022.0",
