@@ -131,34 +131,29 @@ ds["lat_bnds"] = (("lat", "nb"), np.asarray([lat[:-1], lat[1:]]).T)
 ds["lat"].attrs["bounds"] = "lat_bnds"
 ds["lon_bnds"] = (("lon", "nb"), np.asarray([lon[:-1], lon[1:]]).T)
 ds["lon"].attrs["bounds"] = "lon_bnds"
-ds.attrs = {
-    "title": "Global Ocean Data Analysis Project: A uniformly calibrated open ocean data product on inorganic carbon and carbon-relevant variables",
-    "version": "v2.2022",
-    "institutions": "National Centers for Environmental Information",
-    "source": REMOTE_SOURCE,
-    "history": f"Downloaded on {download_stamp} and generated netCDF file on {generate_stamp} with https://github.com/rubisco-sfa/IOMB-Data/blob/main/GLODAP2022/convert.py",
-    "references": """
-@ARTICLE{,
-    author = {Lauvset, S. K., Lange, N., Tanhua, T., Bittig, H. C., Olsen, A., Kozyr, A., Alin, S. R., Álvarez, M., Azetsu-Scott, K., Barbero, L., Becker, S., Brown, P.J., Carter, B. R., da Cunha, L. C., Feely, R. A., Hoppema, M., Humphreys, M. P., Ishii, M., Jeansson, E., Jiang, L. Q., Jones, S. D., Lo Monaco, C., Murata, A., Müller, J. D., Pérez, F. F., Pfeil, B., Schirnick, C., Steinfeldt, R., Suzuki, T., Tilbrook, B., Ulfsbo, A., Velo, A., Woosley, R. J., and Key, R. M.},
-    title= {GLODAPv2.2022: the latest version of the global interior ocean biogeochemical data product},
-    journal = {Earth Syst. Sci. Data Discuss.},
-    year = {2022},
-    doi = {10.5194/essd-2022-293}
-}""",
-}
-ds.to_netcdf(
-    "GLODAP2.2022.nc",
-    encoding={
-        "thetao": {"zlib": True},
-        "so": {"zlib": True},
-        "no3": {"zlib": True},
-        "o2": {"zlib": True},
-        "po4": {"zlib": True},
-        "sio3": {"zlib": True},
-        "chla": {"zlib": True},
-        "talk": {"zlib": True},
-        "dissic": {"zlib": True},
-        "time": {"units": "days since 1850-01-01", "bounds": "time_bnds"},
-        "time_bnds": {"units": "days since 1850-01-01"},
-    },
-)
+for var in ["thetao", "so", "no3", "o2", "po4", "sio3", "chla", "talk", "dissic"]:
+    dset = ds[var].to_dataset()
+    dset["time_bnds"] = ds["time_bnds"]
+    dset.attrs = {
+        "title": "Global Ocean Data Analysis Project: A uniformly calibrated open ocean data product on inorganic carbon and carbon-relevant variables",
+        "version": "v2.2022",
+        "institutions": "National Centers for Environmental Information",
+        "source": REMOTE_SOURCE,
+        "history": f"Downloaded on {download_stamp} and generated netCDF file on {generate_stamp} with https://github.com/rubisco-sfa/IOMB-Data/blob/main/GLODAP2022/convert.py",
+        "references": """
+    @ARTICLE{,
+        author = {Lauvset, S. K., Lange, N., Tanhua, T., Bittig, H. C., Olsen, A., Kozyr, A., Alin, S. R., Álvarez, M., Azetsu-Scott, K., Barbero, L., Becker, S., Brown, P.J., Carter, B. R., da Cunha, L. C., Feely, R. A., Hoppema, M., Humphreys, M. P., Ishii, M., Jeansson, E., Jiang, L. Q., Jones, S. D., Lo Monaco, C., Murata, A., Müller, J. D., Pérez, F. F., Pfeil, B., Schirnick, C., Steinfeldt, R., Suzuki, T., Tilbrook, B., Ulfsbo, A., Velo, A., Woosley, R. J., and Key, R. M.},
+        title= {GLODAPv2.2022: the latest version of the global interior ocean biogeochemical data product},
+        journal = {Earth Syst. Sci. Data Discuss.},
+        year = {2022},
+        doi = {10.5194/essd-2022-293}
+    }""",
+    }
+    dset.to_netcdf(
+        f"{var}.nc",
+        encoding={
+            var: {"zlib": True},
+            "time": {"units": "days since 1850-01-01", "bounds": "time_bnds"},
+            "time_bnds": {"units": "days since 1850-01-01"},
+        },
+    )
