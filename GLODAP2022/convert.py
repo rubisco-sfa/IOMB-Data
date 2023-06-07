@@ -134,6 +134,7 @@ ds["lon"].attrs["bounds"] = "lon_bnds"
 for var in ["thetao", "so", "no3", "o2", "po4", "sio3", "chla", "talk", "dissic"]:
     dset = ds[var].to_dataset()
     dset["time_bnds"] = ds["time_bnds"]
+    dset["depth_bnds"] = ds["depth_bnds"]
     dset.attrs = {
         "title": "Global Ocean Data Analysis Project: A uniformly calibrated open ocean data product on inorganic carbon and carbon-relevant variables",
         "version": "v2.2022",
