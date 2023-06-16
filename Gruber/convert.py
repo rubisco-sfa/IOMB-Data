@@ -10,7 +10,7 @@ from tqdm import tqdm
 def download_file(remote_source, local_source):
     """Download the remote file and show a progress bar."""
     if not os.path.isfile(local_source):
-        resp = requests.get(remote_source, stream=True)
+        resp = requests.get(remote_source, stream=True, timeout=60)
         total_size = int(resp.headers.get("content-length"))
         with open(local_source, "wb") as fdl:
             with tqdm(
