@@ -168,7 +168,7 @@ replicate_fig4(dic, dic0)
 delta_cant = produce_column_inventory_change_1994_2007(dic)
 delta_cant.attrs = {
     "long_name": "column inventory change in Cant from 1994 to 2007",
-    "unit": "mol m-2",
+    "units": "mol m-2",
 }
 dset = delta_cant.to_dataset(name="dcant")
 dset.attrs = {

@@ -46,7 +46,7 @@ dset = dset.rename({"LATITUDE": "lat", "LONGITUDE": "lon"})
 dset = dset[MODEL_VERSION].to_dataset(name="dcant")
 dset["dcant"].attrs = {
     "long_name": "column inventory change in Cant from 1994 to 2007",
-    "unit": "mol m-2",
+    "units": "mol m-2",
 }
 dset.attrs = {
     "title": "Vertically integrated changes in Cant between 1994 and 2007",
