@@ -132,3 +132,7 @@ dmypy.json
 *.png
 *~
 _build
+*.nc
+*.csv
+*.zip
+*vscode
